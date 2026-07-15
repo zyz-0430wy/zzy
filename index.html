@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Treasure Planet｜张泽禹成长宇宙</title>
+
+  <meta
+    name="description"
+    content="张泽禹成长舞台纪念网站"
+  />
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1024;
+      --green: #72f2b4;
+      --green-soft: rgba(114, 242, 180, 0.16);
+      --white: #ffffff;
+      --text: #e8ecf3;
+      --muted: #97a0b5;
+      --line: rgba(255, 255, 255, 0.12);
+      --glass: rgba(255, 255, 255, 0.06);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(37, 91, 80, 0.2), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(50, 76, 120, 0.16), transparent 30%),
+        var(--bg);
+      color: var(--white);
+      font-family:
+        Inter,
+        "HarmonyOS Sans SC",
+        "Microsoft YaHei",
+        sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.05;
+      background-image:
+        repeating-radial-gradient(
+          circle at 0 0,
+          transparent 0,
+          rgba(255,255,255,0.7) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      background-size: 8px 8px;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .section-label {
+      color: var(--green);
+      letter-spacing: 0.25em;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+      margin-top: 22px;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 1px solid transparent;
+      transition: 0.3s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(5, 8, 22, 0.82);
+      backdrop-filter: blur(18px);
+      border-bottom-color: var(--line);
+    }
+
+    .nav-inner {
+      width: min(1240px, calc(100% - 32px));
+      height: 78px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 24px var(--green);
+    }
+
+    .brand-text {
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    .menu-button {
+      display: none;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 680px;
+      height: 680px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(114,242,180,0.17),
+        transparent 65%
+      );
+      filter: blur(20px);
+      right: -120px;
+      top: 80px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding-top: 70px;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--green);
+      letter-spacing: 0.35em;
+      font-size: 12px;
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: rise 1s forwards 0.2s;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      width: 48px;
+      height: 1px;
+      background: var(--green);
+    }
+
+    .hero h1 {
+      font-size: clamp(76px, 14vw, 190px);
+      font-weight: 600;
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      margin-left: -8px;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: rise 1.2s forwards 0.4s;
+    }
+
+    .hero-title-en {
+      margin-top: 26px;
+      font-size: clamp(22px, 4vw, 46px);
+      font-weight: 300;
+      line-height: 1.25;
+      color: rgba(255,255,255,0.86);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: rise 1s forwards 0.65s;
+    }
+
+    .hero-title-en span {
+      color: var(--green);
+    }
+
+    .hero-bottom {
+      margin-top: 46px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: rise 1s forwards 0.85s;
+    }
+
+    .primary-button {
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: #06120d;
+      padding: 15px 30px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 0 36px rgba(114,242,180,0.2);
+    }
+
+    .primary-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 50px rgba(114,242,180,0.36);
+    }
+
+    .ghost-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .ghost-button:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 34px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.42);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-hint::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 60px;
+      margin: 14px auto 0;
+      background: linear-gradient(var(--green), transparent);
+      animation: scrollLine 2s infinite;
+    }
+
+    .about-grid {
+      margin-top: 62px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 34px;
+    }
+
+    .about-card {
+      min-height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-main {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .about-main h3 {
+      font-size: clamp(34px, 5vw, 64px);
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    .about-main h3 span {
+      color: var(--green);
+    }
+
+    .about-main p {
+      max-width: 560px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-top: 24px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 36px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .about-visual {
+      display: flex;
+      align-items: flex-end;
+      padding: 34px;
+      background:
+        linear-gradient(to top, rgba(5,8,22,0.88), rgba(5,8,22,0.05)),
+        url("images/hero.jpg") center/cover;
+    }
+
+    .about-visual::before {
+      content: "请上传图片并命名为 images/hero.jpg";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(114,242,180,0.16), transparent 38%),
+        #0b1024;
+    }
+
+    .visual-number {
+      font-size: 96px;
+      font-weight: 600;
+      line-height: 0.8;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .visual-label {
+      margin-top: 12px;
+      color: var(--green);
+      letter-spacing: 0.22em;
+      font-size: 12px;
+    }
+
+    .timeline {
+      margin-top: 74px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 105px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--green),
+        rgba(255,255,255,0.14),
+        transparent
+      );
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 54px;
+      margin-bottom: 72px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 0.8s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-year {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--green);
+      padding-top: 8px;
+      text-align: right;
+    }
+
+    .timeline-content {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 30px;
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-6px);
+      border-color: rgba(114,242,180,0.52);
+      background: rgba(114,242,180,0.07);
+    }
+
+    .timeline-content::before {
+      content: "";
+      position: absolute;
+      left: -39px;
+      top: 36px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 20px var(--green);
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .timeline-name {
+      margin-top: 10px;
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    .timeline-songs {
+      margin-top: 18px;
+      color: #aab3c6;
+      line-height: 1.9;
+      font-size: 14px;
+    }
+
+    .timeline-songs span {
+      display: inline-block;
+      margin-right: 12px;
+      margin-bottom: 4px;
+    }
+
+    .stages-grid {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .stage-card {
+      min-height: 330px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 28px;
+      background:
+        linear-gradient(to top, rgba(5,8,22,0.94), rgba(5,8,22,0.08)),
+        var(--image),
+        linear-gradient(145deg, #142536, #0a0f22);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      transition: 0.35s ease;
+    }
+
+    .stage-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--green);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.4);
+    }
+
+    .stage-index {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.15em;
+    }
+
+    .stage-card h3 {
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .stage-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .video-grid {
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .video-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: 0.3s ease;
+    }
+
+    .video-card:hover {
+      border-color: var(--green);
+      background: rgba(114,242,180,0.07);
+      transform: translateY(-5px);
+    }
+
+    .video-info h3 {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .video-info p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .play-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: #07110c;
+      font-size: 17px;
+      flex-shrink: 0;
+      margin-left: 20px;
+      transition: 0.3s ease;
+    }
+
+    .video-card:hover .play-button {
+      transform: scale(1.08);
+      box-shadow: 0 0 28px rgba(114,242,180,0.35);
+    }
+
+    .links-box {
+      margin-top: 56px;
+      padding: 42px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background:
+        linear-gradient(135deg, rgba(114,242,180,0.08), rgba(255,255,255,0.03));
+    }
+
+    .links-box h3 {
+      font-size: 26px;
+      font-weight: 500;
+    }
+
+    .official-links {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .official-link {
+      padding: 13px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.8);
+      font-size: 14px;
+      transition: 0.3s ease;
+    }
+
+    .official-link:hover {
+      border-color: var(--green);
+      color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    .message-box {
+      margin-top: 54px;
+      max-width: 760px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 34px;
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+    }
+
+    .message-box textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+      color: white;
+      padding: 18px;
+      font-family: inherit;
+      font-size: 15px;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    .message-box textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(114,242,180,0.08);
+    }
+
+    .message-actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .message-list {
+      margin-top: 24px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .message {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,0.035);
+      color: #c9d0de;
+      line-height: 1.7;
+      animation: rise 0.5s ease;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 34px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .back-top {
+      color: var(--green);
+    }
+
+    @keyframes rise {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scrollLine {
+      0% {
+        transform: scaleY(0);
+        transform-origin: top;
+      }
+      50% {
+        transform: scaleY(1);
+        transform-origin: top;
+      }
+      100% {
+        transform: scaleY(0);
+        transform-origin: bottom;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        position: fixed;
+        top: 78px;
+        left: 16px;
+        right: 16px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(5,8,22,0.94);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        transform: translateY(-20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s ease;
+      }
+
+      .nav-links.open {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .menu-button {
+        display: block;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-visual {
+        min-height: 420px;
+      }
+
+      .stages-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .section {
+        padding: 82px 0;
+      }
+
+      .hero h1 {
+        font-size: 74px;
+      }
+
+      .hero-bottom {
+        align-items: stretch;
+        flex-direction: column;
+        max-width: 240px;
+      }
+
+      .primary-button,
+      .ghost-button {
+        width: 100%;
+      }
+
+      .about-main {
+        padding: 30px;
+      }
+
+      .timeline::before {
+        left: 13px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding-left: 42px;
+      }
+
+      .timeline-year {
+        text-align: left;
+      }
+
+      .timeline-content::before {
+        left: -36px;
+        top: 27px;
+      }
+
+      .stages-grid,
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-card {
+        min-height: 300px;
+      }
+
+      .links-box,
+      .message-box {
+        padding: 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="stars"></canvas>
+  <div class="noise"></div>
+
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+
+      <a class="brand" href="#home">
+        <span class="brand-dot"></span>
+        <span class="brand-text">TREASURE PLANET</span>
+      </a>
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        aria-label="打开导航菜单"
+      >
+        ☰
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#home">首页</a>
+        <a href="#about">关于</a>
+        <a href="#journey">来时路</a>
+        <a href="#stages">舞台</a>
+        <a href="#videos">视频</a>
+        <a href="#message">留言</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero" id="home">
+
+      <div class="hero-glow"></div>
+
+      <div class="container hero-content">
+
+        <div class="hero-eyebrow">
+          ZHANG ZEYU · 0430
+        </div>
+
+        <h1>张泽禹</h1>
+
+        <div class="hero-title-en">
+          Every Step<br />
+          <span>Every Dream.</span>
+        </div>
+
+        <div class="hero-bottom">
+
+          <a href="#journey">
+            <button class="primary-button">
+              进入成长宇宙
+            </button>
+          </a>
+
+          <a href="#stages">
+            <button class="ghost-button">
+              查看舞台
+            </button>
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="scroll-hint">
+        SCROLL
+      </div>
+
+    </section>
+
+    <section class="section" id="about">
+
+      <div class="container">
+
+        <div class="section-label">
+          About
+        </div>
+
+        <h2 class="section-title">
+          在每一次舞台里<br />
+          看见成长
+        </h2>
+
+        <p class="section-desc">
+          这里记录张泽禹从练习生时期到正式舞台的成长轨迹。
+          每一个时间节点、每一首歌、每一场演出，
+          都组成了独一无二的来时路。
+        </p>
+
+        <div class="about-grid">
+
+          <article class="about-card about-main">
+
+            <div>
+              <h3>
+                Music.<br />
+                Stage.<br />
+                <span>Dream.</span>
+              </h3>
+
+              <p>
+                从青涩的第一次登台，到不断尝试新的曲风与舞台表达，
+                成长不是瞬间发生，而是在一次次练习与舞台中慢慢积累。
+              </p>
+            </div>
+
+            <div class="tags">
+              <span class="tag">Singer</span>
+              <span class="tag">Performer</span>
+              <span class="tag">Dream Chaser</span>
+              <span class="tag">Treasure</span>
+            </div>
+
+          </article>
+
+          <article class="about-card about-visual">
+
+            <div>
+              <div class="visual-number">07</div>
+              <div class="visual-label">
+                YEARS OF JOURNEY
+              </div>
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section" id="journey">
+
+      <div class="container">
+
+        <div class="section-label">
+          The Journey
+        </div>
+
+        <h2 class="section-title">
+          来时路
+        </h2>
+
+        <p class="section-desc">
+          从2018年的暑期汇演，到2024年的登陆时刻，
+          舞台见证着每一步成长。
+        </p>
+
+        <div class="timeline">
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2018
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2018.08.29
+              </div>
+
+              <h3 class="timeline-name">
+                暑期汇演
+              </h3>
+
+              <div class="timeline-songs">
+                <span>温柔</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2018
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2018.11.23
+              </div>
+
+              <h3 class="timeline-name">
+                秋日幻想曲
+              </h3>
+
+              <div class="timeline-songs">
+                <span>梦想起航</span>
+                <span>3.6.5</span>
+                <span>我管你</span>
+                <span>小幸运</span>
+                <span>Lollipop</span>
+                <span>年轻的战场</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2018
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2018.12.29
+              </div>
+
+              <h3 class="timeline-name">
+                第一页
+              </h3>
+
+              <div class="timeline-songs">
+                <span>快乐崇拜</span>
+                <span>放学后</span>
+                <span>青春修炼手册</span>
+                <span>街舞少年</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2019
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2019.05.04
+              </div>
+
+              <h3 class="timeline-name">
+                第25小时
+              </h3>
+
+              <div class="timeline-songs">
+                <span>少年说</span>
+                <span>IOIO</span>
+                <span>去流浪</span>
+                <span>飘向北方</span>
+                <span>快乐环岛</span>
+                <span>骑士宣言</span>
+                <span>年轻的战场</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2019
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2019.10.19
+              </div>
+
+              <h3 class="timeline-name">
+                单向放映厅
+              </h3>
+
+              <div class="timeline-songs">
+                <span>我的未来式</span>
+                <span>跨时代</span>
+                <span>My Little Princess</span>
+                <span>凑热闹</span>
+                <span>杀破狼</span>
+                <span>Capture</span>
+                <span>信仰</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2020
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2020.01.11
+              </div>
+
+              <h3 class="timeline-name">
+                重逢
+              </h3>
+
+              <div class="timeline-songs">
+                <span>Journey</span>
+                <span>十二月的奇迹</span>
+                <span>街舞少年</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2020
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2020.04.29
+              </div>
+
+              <h3 class="timeline-name">
+                想见你的倒计时
+              </h3>
+
+              <div class="timeline-songs">
+                <span>爱你</span>
+                <span>那个男人</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2020
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2020.11.07
+              </div>
+
+              <h3 class="timeline-name">
+                圈
+              </h3>
+
+              <div class="timeline-songs">
+                <span>I Believe</span>
+                <span>Funky Show</span>
+                <span>温柔</span>
+                <span>Maria</span>
+                <span>庆功酒</span>
+                <span>Thanks</span>
+                <span>杀手</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2021
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2021.07.31
+              </div>
+
+              <h3 class="timeline-name">
+                迷宫
+              </h3>
+
+              <div class="timeline-songs">
+                <span>倔强</span>
+                <span>不死鸟</span>
+                <span>Me You</span>
+                <span>北极星的眼泪</span>
+                <span>顶天立地</span>
+                <span>火力全开</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2022
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2022.01.24
+              </div>
+
+              <h3 class="timeline-name">
+                未完成的约定
+              </h3>
+
+              <div class="timeline-songs">
+                <span>Hello</span>
+                <span>长大</span>
+                <span>傻瓜</span>
+                <span>烈火战马</span>
+                <span>笨小孩的道歉信</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2022
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2022.08.19
+              </div>
+
+              <h3 class="timeline-name">
+                陆
+              </h3>
+
+              <div class="timeline-songs">
+                <span>年轻的战场</span>
+                <span>Better Now</span>
+                <span>写给他们的信</span>
+                <span>将军话</span>
+                <span>Bad Boy</span>
+                <span>恶童</span>
+                <span>盛夏光年</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2023
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2023.01.15
+              </div>
+
+              <h3 class="timeline-name">
+                瞬间
+              </h3>
+
+              <div class="timeline-songs">
+                <span>青春修炼手册</span>
+                <span>我们的时光</span>
+                <span>Gee</span>
+                <span>Ring Ring Ring</span>
+                <span>日日夜夜</span>
+                <span>流浪记</span>
+                <span>Bang Bang</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2023
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2023.04.15
+              </div>
+
+              <h3 class="timeline-name">
+                蝴蝶效应
+              </h3>
+
+              <div class="timeline-songs">
+                <span>想见你想见你想见你</span>
+                <span>长大</span>
+                <span>人鱼的眼泪</span>
+                <span>一起长大吧笨蛋</span>
+                <span>你的微笑</span>
+                <span>CALL ME BABY</span>
+                <span>不完美小孩</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2023
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2023.07.22 — 07.23
+              </div>
+
+              <h3 class="timeline-name">
+                生于火焰
+              </h3>
+
+              <div class="timeline-songs">
+                <span>逆战</span>
+                <span>少年郎</span>
+                <span>Suit & Tie</span>
+                <span>波斯猫</span>
+                <span>花花公子</span>
+                <span>危险派对</span>
+                <span>三国恋</span>
+                <span>不死鸟</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2023
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2023.08.12 — 08.13
+              </div>
+
+              <h3 class="timeline-name">
+                让我们不顾一切
+              </h3>
+
+              <div class="timeline-songs">
+                <span>黑暗骑士</span>
+                <span>派对动物</span>
+                <span>花房姑娘</span>
+                <span>连名带姓</span>
+                <span>Butter Fly</span>
+                <span>跨时代</span>
+                <span>火力全开</span>
+                <span>灵魂冲浪</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2023
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2023.11.29
+              </div>
+
+              <h3 class="timeline-name">
+                齿轮
+              </h3>
+
+              <div class="timeline-songs">
+                <span>继续转动的成长轨迹</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2024
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2024.02.03 — 02.04
+              </div>
+
+              <h3 class="timeline-name">
+                盛放
+              </h3>
+
+              <div class="timeline-songs">
+                <span>在舞台上继续盛放</span>
+              </div>
+            </div>
+
+          </article>
+
+          <article class="timeline-item">
+
+            <div class="timeline-year">
+              2024
+            </div>
+
+            <div class="timeline-content">
+              <div class="timeline-date">
+                2024.08.25 — 08.26
+              </div>
+
+              <h3 class="timeline-name">
+                登陆时刻
+              </h3>
+
+              <div class="timeline-songs">
+                <span>成长轨迹的新起点</span>
+              </div>
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section" id="stages">
+
+      <div class="container">
+
+        <div class="section-label">
+          Stage Universe
+        </div>
+
+        <h2 class="section-title">
+          舞台宇宙
+        </h2>
+
+        <p class="section-desc">
+          每一张照片都可以替换成你喜欢的舞台图片。
+          之后上传图片时，按对应名称保存即可。
+        </p>
+
+        <div class="stages-grid">
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage1.jpg')"
+          >
+            <span class="stage-index">01</span>
+            <h3>练习生时期</h3>
+            <p>2018 — 2022</p>
+          </article>
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage2.jpg')"
+          >
+            <span class="stage-index">02</span>
+            <h3>登陆计划</h3>
+            <p>蝴蝶效应 · 生于火焰 · 不顾一切</p>
+          </article>
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage3.jpg')"
+          >
+            <span class="stage-index">03</span>
+            <h3>登陆时刻</h3>
+            <p>新的旅程</p>
+          </article>
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage4.jpg')"
+          >
+            <span class="stage-index">04</span>
+            <h3>Solo Stage</h3>
+            <p>独唱舞台记录</p>
+          </article>
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage5.jpg')"
+          >
+            <span class="stage-index">05</span>
+            <h3>Live Performance</h3>
+            <p>舞台现场</p>
+          </article>
+
+          <article
+            class="stage-card"
+            style="--image:url('images/stage6.jpg')"
+          >
+            <span class="stage-index">06</span>
+            <h3>Future</h3>
+            <p>未完待续</p>
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section" id="videos">
+
+      <div class="container">
+
+        <div class="section-label">
+          Video Archive
+        </div>
+
+        <h2 class="section-title">
+          视频资料
+        </h2>
+
+        <p class="section-desc">
+          点击卡片，会跳转到你提供的哔哩哔哩视频账号主页。
+        </p>
+
+        <div class="video-grid">
+
+          <a
+            class="video-card"
+            href="https://b23.tv/NInvdqJ"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="video-info">
+              <h3>RainForest-张泽禹</h3>
+              <p>舞台与成长视频</p>
+            </div>
+            <div class="play-button">▶</div>
+          </a>
+
+          <a
+            class="video-card"
+            href="https://b23.tv/Wx8oah7"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="video-info">
+              <h3>无条件_张泽禹</h3>
+              <p>舞台视频合集</p>
+            </div>
+            <div class="play-button">▶</div>
+          </a>
+
+          <a
+            class="video-card"
+            href="https://b23.tv/ukCAVrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="video-info">
+              <h3>一万把吉他_</h3>
+              <p>音乐与舞台记录</p>
+            </div>
+            <div class="play-button">▶</div>
+          </a>
+
+          <a
+            class="video-card"
+            href="https://b23.tv/4agSZR2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="video-info">
+              <h3>豁牙仔0430</h3>
+              <p>视频资料主页</p>
+            </div>
+            <div class="play-button">▶</div>
+          </a>
+
+        </div>
+
+        <div class="links-box">
+
+          <h3>官方与相关入口</h3>
+
+          <div class="official-links">
+
+            <a
+              class="official-link"
+              href="https://weibo.com/u/7626514031"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              官方微博
+            </a>
+
+            <a
+              class="official-link"
+              href="https://m.weibo.cn/p/100808afa45536147616ca3db0a7490704bbfa"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              微博超话
+            </a>
+
+            <a
+              class="official-link"
+              href="https://github.com/zyz-0430wy/zzy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              网站仓库
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section" id="message">
+
+      <div class="container">
+
+        <div class="section-label">
+          Message Wall
+        </div>
+
+        <h2 class="section-title">
+          留下一句话
+        </h2>
+
+        <p class="section-desc">
+          留言只保存在你自己的浏览器中，刷新后仍然可以看到。
+        </p>
+
+        <div class="message-box">
+
+          <textarea
+            id="messageInput"
+            maxlength="120"
+            placeholder="写下一句祝福……"
+          ></textarea>
+
+          <div class="message-actions">
+
+            <button
+              class="primary-button"
+              id="sendMessage"
+            >
+              发布留言
+            </button>
+
+          </div>
+
+          <div
+            class="message-list"
+            id="messageList"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+
+    <div class="container footer-inner">
+
+      <div>
+        Treasure Planet · 张泽禹成长舞台纪念站
+      </div>
+
+      <a class="back-top" href="#home">
+        回到顶部 ↑
+      </a>
+
+    </div>
+
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+
+    let stars = [];
+    let mouseX = 0;
+    let mouseY = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      createStars();
+    }
+
+    function createStars() {
+      const count = Math.floor(
+        (window.innerWidth * window.innerHeight) / 7000
+      );
+
+      stars = [];
+
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 1.8 + 0.3,
+          speed: Math.random() * 0.25 + 0.05,
+          alpha: Math.random() * 0.7 + 0.2
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach((star) => {
+        star.y -= star.speed;
+
+        if (star.y < -5) {
+          star.y = canvas.height + 5;
+          star.x = Math.random() * canvas.width;
+        }
+
+        const offsetX =
+          (mouseX - canvas.width / 2) * star.size * 0.002;
+
+        const offsetY =
+          (mouseY - canvas.height / 2) * star.size * 0.002;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          star.x + offsetX,
+          star.y + offsetY,
+          star.size,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle =
+          `rgba(255,255,255,${star.alpha})`;
+
+        ctx.fill();
+      });
+
+      requestAnimationFrame(drawStars);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    window.addEventListener("mousemove", (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    });
+
+    resizeCanvas();
+    drawStars();
+
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+
+    const menuButton =
+      document.getElementById("menuButton");
+
+    const navLinks =
+      document.getElementById("navLinks");
+
+    menuButton.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+      });
+    });
+
+    const timelineItems =
+      document.querySelectorAll(".timeline-item");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      {
+        threshold: 0.15
+      }
+    );
+
+    timelineItems.forEach((item) => {
+      observer.observe(item);
+    });
+
+    const messageInput =
+      document.getElementById("messageInput");
+
+    const sendMessage =
+      document.getElementById("sendMessage");
+
+    const messageList =
+      document.getElementById("messageList");
+
+    function getMessages() {
+      try {
+        return JSON.parse(
+          localStorage.getItem("treasureMessages")
+        ) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveMessages(messages) {
+      localStorage.setItem(
+        "treasureMessages",
+        JSON.stringify(messages)
+      );
+    }
+
+    function renderMessages() {
+      const messages = getMessages();
+
+      messageList.innerHTML = "";
+
+      messages
+        .slice()
+        .reverse()
+        .forEach((text) => {
+          const item =
+            document.createElement("div");
+
+          item.className = "message";
+          item.textContent = text;
+
+          messageList.appendChild(item);
+        });
+    }
+
+    sendMessage.addEventListener("click", () => {
+      const text = messageInput.value.trim();
+
+      if (!text) {
+        alert("请先写下一句话。");
+        return;
+      }
+
+      const messages = getMessages();
+
+      messages.push(text);
+
+      saveMessages(messages);
+
+      messageInput.value = "";
+
+      renderMessages();
+    });
+
+    renderMessages();
+  </script>
+
+</body>
+</html>
