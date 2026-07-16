@@ -327,3 +327,68 @@ cards.forEach((card) => {
 
   observer.observe(card);
 });
+
+const wishButton =
+document.getElementById("wishButton");
+
+
+const wishInput =
+document.getElementById("wishInput");
+
+
+const wishSky =
+document.getElementById("wishSky");
+
+
+
+wishButton.addEventListener(
+"click",
+()=>{
+
+
+const text =
+wishInput.value.trim();
+
+
+if(!text){
+alert("写下一句话吧");
+return;
+}
+
+
+
+const star =
+document.createElement("div");
+
+
+star.className="wish-star";
+
+
+star.style.left =
+Math.random()*90+"%";
+
+
+star.style.top =
+Math.random()*80+"%";
+
+
+
+star.title=text;
+
+
+
+star.onclick=()=>{
+
+alert(text);
+
+};
+
+
+
+wishSky.appendChild(star);
+
+
+wishInput.value="";
+
+
+});
