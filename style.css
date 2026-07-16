@@ -401,3 +401,147 @@ footer a {
     gap: 12px;
   }
 }
+
+.wish-section{
+  text-align:center;
+}
+
+
+.moon-area{
+  margin:60px auto;
+}
+
+
+.moon{
+  font-size:120px;
+  filter:
+  drop-shadow(
+    0 0 40px #fff
+  );
+  animation:
+  floatMoon 4s infinite ease-in-out;
+}
+
+
+.moon-area p{
+  margin-top:20px;
+  color:#9aa5b8;
+  line-height:2;
+}
+
+
+
+.wish-box{
+
+  max-width:600px;
+  margin:40px auto;
+
+  padding:30px;
+
+  border-radius:30px;
+
+  background:
+  rgba(255,255,255,0.06);
+
+  backdrop-filter:blur(20px);
+
+}
+
+
+
+.wish-box textarea{
+
+width:100%;
+
+height:120px;
+
+border-radius:20px;
+
+padding:20px;
+
+background:
+rgba(0,0,0,.25);
+
+border:1px solid rgba(255,255,255,.2);
+
+color:white;
+
+font-size:16px;
+
+}
+
+
+
+#wishButton{
+
+margin-top:20px;
+
+padding:15px 35px;
+
+border-radius:30px;
+
+border:none;
+
+background:#72f2b4;
+
+cursor:pointer;
+
+}
+
+
+
+.wish-sky{
+
+height:400px;
+
+position:relative;
+
+margin-top:50px;
+
+overflow:hidden;
+
+}
+
+
+
+.wish-star{
+
+position:absolute;
+
+width:12px;
+
+height:12px;
+
+background:#72f2b4;
+
+border-radius:50%;
+
+box-shadow:
+0 0 20px #72f2b4;
+
+cursor:pointer;
+
+animation:
+starFloat 5s infinite ease-in-out;
+
+}
+
+
+
+@keyframes floatMoon{
+
+50%{
+transform:translateY(-15px);
+}
+
+}
+
+
+
+@keyframes starFloat{
+
+50%{
+transform:translateY(-20px);
+}
+
+}
