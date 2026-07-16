@@ -1,6 +1,6 @@
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
-
+let particles = [];
 let stars = [];
 let mouseX = 0;
 let mouseY = 0;
@@ -31,7 +31,35 @@ function createStars() {
 
 function drawStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+// 绘制点击星尘
+particles.forEach((p, index) => {
 
+  p.x += p.speedX;
+  p.y += p.speedY;
+
+  p.life -= 0.02;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y,
+    p.size,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fillStyle =
+    `rgba(114,242,180,${p.life})`;
+
+  ctx.fill();
+
+
+  if(p.life <= 0){
+    particles.splice(index,1);
+  }
+
+});
   stars.forEach((star) => {
     star.y -= star.speed;
 
@@ -71,7 +99,34 @@ window.addEventListener("mousemove", (event) => {
   mouseX = event.clientX;
   mouseY = event.clientY;
 });
+window.addEventListener(
+"click",
+(event)=>{
 
+  for(let i=0;i<35;i++){
+
+    particles.push({
+
+      x:event.clientX,
+
+      y:event.clientY,
+
+      size:
+      Math.random()*3+1,
+
+      speedX:
+      (Math.random()-0.5)*6,
+
+      speedY:
+      (Math.random()-0.5)*6,
+
+      life:1
+
+    });
+
+  }
+
+});
 resizeCanvas();
 drawStars();
 
